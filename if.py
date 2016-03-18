@@ -8,6 +8,7 @@ class Place(object):
         print('no fire for ugg')
         return self
     def examine(self, item):
+        print (' you look closely at the ' + str(*item) + ' and see nothing useful')
         #TODO -- #implement
         return self
     def get_take(self, item):
