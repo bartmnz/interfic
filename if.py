@@ -3,12 +3,13 @@ class Place(object):
     def __init__(self, items, finished_places):
         self.items = items
         self.finished_places = finished_places
-        self.__in_thing = []
+        self.in_thing = []
     def light(self, item):
         print('no fire for ugg')
         return self
     def examine(self, item):
-        pass
+        #TODO -- #implement
+        return self
     def get_take(self, item):
         if str(item[0]) == 'all':
             if self.finished_places == 0:
@@ -43,8 +44,8 @@ class Place(object):
     def move(self, direction):
         #direction = direction[0]
         print ('moving ' + direction)
-        if self.__in_thing:
-            print( "You have to get out of the " + str(self.__in_thing[-1]) +" first" )
+        if self.in_thing:
+            print( "You have to get out of the " + str(*self.in_thing[-1]) +" first" )
             return self
         if direction == 'north':
             if self.finished_places == 12:
@@ -63,11 +64,19 @@ class Place(object):
         #implement
         # return new instance on class
     def enter(self, thing):
+        self.in_thing.append(thing)
         return self
         # if thing == 'cave':
         #     if self.finished_places == 5:
         #         self.finished_places += 1
     def exit(self, thing):
+        if ( not len(self.in_thing)):
+            print ('you aren\'t in anything')
+            return self
+        last = self.in_thing.pop()
+        if (last != thing):
+            print ('you have to get out of the ' + str(*last) + ' first')
+            self.in_thing.append(last)
         return self
         # if thing == 'cave':
         #     if self.finished_places == 11:
@@ -113,23 +122,28 @@ class Up(Place):
             action = item[1]
             item = item[0]
         except IndexError:
-            #TODO
-            pass
+            return self
         if place not in self.items:
             print( "you don't have a " + str(place))
-        if item not in self.items:
+        elif item not in self.items:
             print( "you don't have a " + str(item))
-        if item == 'edelweiss' and place == 'fire':
+        elif item == 'edelweiss' and place == 'fire':
             if self.finished_places == 8:
                 self.finished_places += 1
-        if item == 'helmet' and place == 'statue':
+        elif item == 'helmet' and place == 'statue':
             if self.finished_places == 9:
                 self.finished_places += 1
-        if item == 'prism' and place == 'pickle':
+        elif item == 'prism' and place == 'pickle':
             if self.finished_places == 10:
                 self.finished_places += 1
+        else:
+            #TODO
+            print ('why whould you do that?')
         return self
+        
+    
     def wait(self, *args):
+        #TODO -- say something
         if self.finished_places == 7:
             self.finished_places += 1
         return self
