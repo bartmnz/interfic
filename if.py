@@ -29,7 +29,8 @@ class Place(object):
             Throws: 
                 IndexError if item is empty
         """
-        print('no ' + str(item[0]) + ' for ugg')
+        item = ' '.join(item)
+        print('no ' + item + ' for ugg')
         return self
     
     def examine(self, item):
@@ -42,7 +43,8 @@ class Place(object):
             Throws: 
                 IndexError if item is empty
         """
-        print (' you look closely at the ' + str(item[0]) + ' and see nothing useful')
+        item = ' '.join(item)
+        print (' you look closely at the ' + str(item) + ' and see nothing useful')
         #TODO -- #implement
         return self
     
@@ -57,17 +59,17 @@ class Place(object):
             Throws: 
                 IndexError if item is empty
         """
-        if str(item[0]) == 'all':
+        item = ' '.join(item)
+        if str(item) == 'all':
             if self.finished_places == 0:
                 self.items = ['edelweiss']
                 self.items.append('prism')
                 self.items.append('pickle')
                 self.finished_places += 1
-        if (self.items):
-            self.items.append(str(*item))
+        elif (self.items):
+            self.items.append(item)
         else:
-            self.items = [str(*item)]
-        print (self.items)
+            self.items = [item]
         return self
     
     def openn( self, thing):
@@ -80,7 +82,8 @@ class Place(object):
             Throws: 
                 IndexError if item is empty
         """
-        if thing[0] == 'door':
+        thing = ' '.join(thing)
+        if thing == 'door':
             if self.finished_places == 1:
                 self.finished_places += 1
         return self
@@ -95,8 +98,8 @@ class Place(object):
             Throws:
                 IndexError if item is empty
         """
-        item = item[0]
-        print (item)
+        item = ' '.join(item)
+        
         if not (item in self.items):
             print( "you don't have a " + str(item) + " to drop")
         self.items.remove(item)
@@ -266,7 +269,8 @@ class Up(Place):
             Throws:
                 IndexError
         """
-        if item[0] == 'fire':
+        item = ' '.join(item)
+        if item == 'fire':
             print ('ohh fire')
             self.items.append('fire')
             if self.finished_places == 6:
@@ -344,7 +348,8 @@ class Up(Place):
         """
         
         super(Up, self).enter(thing)
-        if thing[0] == 'cave':
+        thing = ' '.join(thing)
+        if thing == 'cave':
             if self.finished_places == 5:
                 self.items.append('statue')
                 self.finished_places += 1
@@ -362,7 +367,8 @@ class Up(Place):
                 IndexError
         """
         super(Up, self).exit(thing)
-        if thing[0] == 'cave':
+        thing = ' '.join(thing)
+        if thing == 'cave':
             if self.finished_places == 11:
                 self.items.remove('statue')
                 self.finished_places += 1
@@ -388,7 +394,8 @@ class East(Place):
             Throws:
                 IndexError
         """
-        if item[0] == 'edelweiss':
+        item = ' '.join(item)
+        if item == 'edelweiss':
             if self.finished_places == 3:
                 self.finished_places += 1
             return self
@@ -410,7 +417,6 @@ def main():
             quest = todo[user[0]](user[1::])
         except KeyError:
             quest = quest.move(user[0])
-            print ( type(quest))
         except IndexError:
             if( user ):
                 print (str(user[0]) + ' what?')
