@@ -149,7 +149,6 @@ class Place(object):
             Throws:
                 IndexError if direction is empty
         """
-        direction = direction[0]
         try:
             
             if self.in_thing:
@@ -411,6 +410,7 @@ def main():
             quest = todo[user[0]](user[1::])
         except KeyError:
             quest = quest.move(user[0])
+            print ( type(quest))
         except IndexError:
             if( user ):
                 print (str(user[0]) + ' what?')
