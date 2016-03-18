@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+import sys
+
 
 class Place(object):
     def __init__(self, items, finished_places):
@@ -183,7 +186,8 @@ def main():
     while ( quest ):
         todo = {'light' : quest.light, 'examine' : quest.examine, 'get' : quest.get_take, 
         'take' : quest.get_take, 'drop' : quest.drop, 'put' : quest.put_in, 
-        'wait' : quest.wait, 'enter' : quest.enter, 'exit' : quest.exit, 'open' : quest.openn}
+        'wait' : quest.wait, 'enter' : quest.enter, 'exit' : quest.exit, 'open' : quest.openn,
+        'quit' : sys.exit}
         user = input ( "enter something: ")
         user = user.lower()
         user = user.split()
@@ -191,6 +195,7 @@ def main():
             quest = todo[user[0]](user[1::])
         except KeyError:
             quest = quest.move(user[0])
+            
         # input()
         # do task
         # if move quest = quest.move()
