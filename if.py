@@ -79,7 +79,7 @@ class Place(object):
                 return East(self.items, self.finished_places)
         except AttributeError:
             self.items = []
-            self.move(direction)
+            return self.move(direction)
         return Place(self.items, self.finished_places)
         
         #implement
@@ -130,8 +130,6 @@ class Up(Place):
         self.items.append('helmet')
     def light(self, item):
         print ('ohh fire')
-        
-        
         if item[0] == 'fire':
             self.items.append('fire')
             if self.finished_places == 6:
