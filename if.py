@@ -3,18 +3,60 @@ import sys
 
 
 class Place(object):
+    """
+        Fluent Interface for a location in the quest. Provides default behavior.
+        
+        Args:
+            items: a list of items that the player has at their disposal
+            finished_places: integer to represent how many steps have been completed in the 
+                correct order.
+        Returns:
+            None
+    
+    """
     def __init__(self, items, finished_places):
         self.items = items
         self.finished_places = finished_places
         self.in_thing = []
+    
     def light(self, item):
+        """
+            default method -- no real functionality
+            Args:
+                item: list of items to light
+            Returns:
+                self
+            Throws: 
+                IndexError if item is empty
+        """
         print('no ' + str(item[0]) + ' for ugg')
         return self
+    
     def examine(self, item):
+        """
+            default method -- no real functionality
+            Args:
+                item: list of items to examine
+            Returns:
+                self
+            Throws: 
+                IndexError if item is empty
+        """
         print (' you look closely at the ' + str(item[0]) + ' and see nothing useful')
         #TODO -- #implement
         return self
+    
     def get_take(self, item):
+        """
+            default method adds edelweiss, prism, and pickle to invertory if 'all'
+                is the item to get. else adds the item to inventory.
+            Args:
+                item: list of items to get
+            Returns:
+                self
+            Throws: 
+                IndexError if item is empty
+        """
         if str(item[0]) == 'all':
             if self.finished_places == 0:
                 self.items = ['edelweiss']
@@ -27,12 +69,32 @@ class Place(object):
             self.items = [str(*item)]
         print (self.items)
         return self
+    
     def openn( self, thing):
+        """
+            default method -- no real functionality
+            Args:
+                item: list of items to open
+            Returns:
+                self
+            Throws: 
+                IndexError if item is empty
+        """
         if thing[0] == 'door':
             if self.finished_places == 1:
                 self.finished_places += 1
         return self
+    
     def drop(self, item):
+        """
+            default method removes item from inventory if it is there -- else prints error
+            Args:
+                item: list of items to be removed
+            Returns:
+                self
+            Throws:
+                IndexError if item is empty
+        """
         item = item[0]
         print (item)
         if not (item in self.items):
@@ -40,7 +102,16 @@ class Place(object):
         self.items.remove(item)
         return self
         #implement
+    
     def put_in(self, items):
+        """
+            default method no real functionality -- checks to see if both items are in
+                inventory
+            Args:
+                items: list containing items to put in each other
+            Returns: 
+                self
+        """
         try:
             if items[0] not in self.items:
                 print( "you don't have a " + str(items[0]))
@@ -56,10 +127,29 @@ class Place(object):
         #implement
         
     def wait (self, *args):
+        """
+            default method -- no real functionality
+            Args:
+                args: not used at all
+            Returns:
+                self
+        """
         print("and why are we stoping here?")
         return self
+    
     def move(self, direction):
-        #direction = direction[0]
+        """
+            Function to create new instances of the class (or subclasses) 
+                with the appropiate functionality.
+            Args:
+                direction: name of subclass to initialize (north, up, east) 
+                    will default to simply creating new Place
+            Returns:
+                a new instance of Place class or one of its sub-classes
+            Throws:
+                IndexError if direction is empty
+        """
+        direction = direction[0]
         try:
             
             if self.in_thing:
@@ -85,12 +175,31 @@ class Place(object):
         #implement
         # return new instance on class
     def enter(self, thing):
+        """
+            function used to keep track of enter and exit calls -- adds to a stack 
+            Args:
+                thing: item to 'enter'
+            Returns:
+                self
+            Throws:
+                IndexError if thing is empty
+        """
         self.in_thing.append(thing)
         return self
         # if thing == 'cave':
         #     if self.finished_places == 5:
         #         self.finished_places += 1
+    
     def exit(self, thing):
+        """
+            function used to keep track of enter and exit calls -- removes from stack 
+            Args:
+                thing: item to 'exit'
+            Returns:
+                self
+            Throws:
+                IndexError if thing is empty
+        """
         if ( not len(self.in_thing)):
             print ('you aren\'t in anything')
             return self
@@ -104,20 +213,38 @@ class Place(object):
         #         self.finished_places += 1
         
 class North(Place):
+    """
+        Implements Place --- overwrites get_take function
+    """
     #get meaning of life is only useful thing
     def __init__(self, items, finished_places):
         super(North, self).__init__(items, finished_places)
     #things North has
+    
     def get_take(self, item):
+        """
+            checks to see if item is 'the meaning of life' and all other steps required
+            to win are true. else calls super().get_take
+            Args: 
+                item: item to get
+            Returns:
+                false on win condition
+                self otherwise
+            Throws: 
+                IndexError
+        """
         item = ' '.join(item)
         if self.finished_places == 13:
             if item == 'meaning of life':
                 print('you win')
                 return False
-        return self
+        return super(North, self).get_take(item)
         # if item is meaning of life -- win
 
 class Up(Place):
+    """
+        Implements Place --- overwrites light, wait, put_in, exit functions
+    """
     # ENTER CAVE
 # LIGHT FIRE
 # WAIT
@@ -128,16 +255,39 @@ class Up(Place):
     def __init__(self, items, finished_places):
         super(Up, self).__init__(items, finished_places)
         self.items.append('helmet')
+    
     def light(self, item):
-        print ('ohh fire')
+        """
+            checks to see if item is fire and all other previous steps have been taken
+            if not calls super.light()
+            Args:
+                item: item to light
+            Returns:
+                self
+            Throws:
+                IndexError
+        """
         if item[0] == 'fire':
+            print ('ohh fire')
             self.items.append('fire')
             if self.finished_places == 6:
                 self.finished_places += 1
-        
-        return self
+            return self
+        return super(Up, self).light(item)
         #if item is fire do stuff
+    
     def put_in(self, item):
+        """
+            checks for  commands : PUT EDELWEISS IN FIRE # PUT HELMET IN STATUE # PUT PRISM IN PICKLE
+            and all other steps to have been completed.
+            
+            Args:
+                item: list of items to put in each other
+            Returns:
+                self
+            Throws:
+                IndexError
+        """
         try:
             place = item[2]
             action = item[1]
@@ -149,8 +299,10 @@ class Up(Place):
             print ('you don\'t have anything')
         if place not in self.items:
             print( "you don't have a " + str(place))
+            return self
         elif item not in self.items:
             print( "you don't have a " + str(item))
+            return self
         elif item == 'edelweiss' and place == 'fire':
             if self.finished_places == 8:
                 self.finished_places += 1
@@ -167,18 +319,49 @@ class Up(Place):
         
     
     def wait(self, *args):
+        """
+            checks to see if all previous steps have been completed in order and
+            calls super function. 
+            Args:
+                *args: not used
+            Returns:
+                self
+        """
         #TODO -- say something
         if self.finished_places == 7:
             self.finished_places += 1
-        return self
+        return super(Up, self).wait(*args)
+    
     def enter(self, thing):
+        """
+            checks to see if you are entering a cave and all other steps have been taken
+            
+            Args:
+                thing: item to 'enter'
+            Returns:
+                self
+            Throws:
+                IndexError
+        """
+        
         super(Up, self).enter(thing)
         if thing[0] == 'cave':
             if self.finished_places == 5:
                 self.items.append('statue')
                 self.finished_places += 1
         return self
+    
     def exit(self, thing):
+        """
+            checks to see if you are exiting a cave and all other steps have been taken
+            
+            Args:
+                thing: item to 'exit'
+            Returns:
+                self
+            Throws:
+                IndexError
+        """
         super(Up, self).exit(thing)
         if thing[0] == 'cave':
             if self.finished_places == 11:
@@ -195,11 +378,22 @@ class East(Place):
     # GET EDELWEISS
     def __init__(self, items, finished_places):
         super(East, self).__init__(items, finished_places)
+    
     def get_take(self, item):
+        """
+            checks to see if you are getting edelweiss and all other steps have been taken
+            Args:
+                item: item to get
+            Returns:
+                self
+            Throws:
+                IndexError
+        """
         if item[0] == 'edelweiss':
             if self.finished_places == 3:
                 self.finished_places += 1
-        return self
+            return self
+        return super(East, self).get_take(item)
         
     
 def main():
@@ -227,6 +421,7 @@ def main():
             
         # input()
         # do task
-        # if move quest = quest.move()
+        # if task is not in list move 
+
 if __name__ == "__main__":
     main()
