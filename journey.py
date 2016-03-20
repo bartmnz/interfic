@@ -18,6 +18,10 @@ class Place(object):
         self.items = items
         self.finished_places = finished_places
         self.in_thing = []
+        if ( self.finished_places == 0 ):
+            print('Here is the part where I tell you a story if i were a better writer'
+            ' there would be a better story: You should probably type "GET ALL" followed'
+            ' by "OPEN DOOR" and finally "EAST"')
     
     def light(self, item):
         """
@@ -221,6 +225,7 @@ class North(Place):
     #get meaning of life is only useful thing
     def __init__(self, items, finished_places):
         super(North, self).__init__(items, finished_places)
+        print( 'you should probably "GET MEANING OF LIFE"')
     #things North has
     
     def get_take(self, item):
@@ -257,6 +262,10 @@ class Up(Place):
     def __init__(self, items, finished_places):
         super(Up, self).__init__(items, finished_places)
         self.items.append('helmet')
+        print ( 'I know this is a terrible story, I\'m not a writer'
+            'here is where i subtly tell you to "ENTER CAVE", "LIGHT FIRE",'
+            ' "WAIT", "PUT EDELWEISS IN FIRE", "PUT HELMET IN STATUE", "PUT PRISM IN'
+            ' PICKLE", "EXIT CAVE", "NORTH"')
     
     def light(self, item):
         """
@@ -383,7 +392,7 @@ class East(Place):
     # GET EDELWEISS
     def __init__(self, items, finished_places):
         super(East, self).__init__(items, finished_places)
-    
+        print ( ' more story goes here: type "GET EDELWEISS" and "UP"')
     def get_take(self, item):
         """
             checks to see if you are getting edelweiss and all other steps have been taken
