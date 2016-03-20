@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import sys
+import os
 
 
 class Place(object):
@@ -18,10 +19,13 @@ class Place(object):
         self.items = items
         self.finished_places = finished_places
         self.in_thing = []
+        
         if ( self.finished_places == 0 ):
+            os.system('clear')
             print('Here is the part where I tell you a story if i were a better writer'
             ' there would be a better story: You should probably type "GET ALL" followed'
             ' by "OPEN DOOR" and finally "EAST"')
+
     
     def light(self, item):
         """
@@ -176,6 +180,9 @@ class Place(object):
         except AttributeError:
             self.items = []
             return self.move(direction)
+        print(' you didn\'t listen to my very subtle hints, i know it was hard'
+            ' your lost now. if you remember the commands i told you you can '
+            ' go back to where you left off and continue, or just type "QUIT"')
         return Place(self.items, self.finished_places)
         
         #implement
@@ -225,6 +232,7 @@ class North(Place):
     #get meaning of life is only useful thing
     def __init__(self, items, finished_places):
         super(North, self).__init__(items, finished_places)
+        os.system('clear')
         print( 'you should probably "GET MEANING OF LIFE"')
     #things North has
     
@@ -262,6 +270,7 @@ class Up(Place):
     def __init__(self, items, finished_places):
         super(Up, self).__init__(items, finished_places)
         self.items.append('helmet')
+        os.system('clear')
         print ( 'I know this is a terrible story, I\'m not a writer'
             'here is where i subtly tell you to "ENTER CAVE", "LIGHT FIRE",'
             ' "WAIT", "PUT EDELWEISS IN FIRE", "PUT HELMET IN STATUE", "PUT PRISM IN'
@@ -392,6 +401,7 @@ class East(Place):
     # GET EDELWEISS
     def __init__(self, items, finished_places):
         super(East, self).__init__(items, finished_places)
+        os.system('clear')
         print ( ' more story goes here: type "GET EDELWEISS" and "UP"')
     def get_take(self, item):
         """
